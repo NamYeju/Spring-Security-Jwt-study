@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/jwtTest
+    username: root
+    password: 1838
+
+
+  security:
+    user:
+      name: user
+      password: 1234
+
+server:
+  port: 8080

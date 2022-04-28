@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @Builder
 @Getter
 @Entity
-@Table(name = "USER")
+@Table(name = "user")
 
 /**
  * UserDetails는 spring security에서 제공하는 인터페이스로, 사용자의 정보를 담아두고 있으며
@@ -34,8 +34,8 @@ public class User implements UserDetails {
     private String identity;
     private String password;
 
-    @Column(name = "user_roles")
     @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "id"))
     @Builder.Default
     private List<String> roles = new ArrayList<>();
 

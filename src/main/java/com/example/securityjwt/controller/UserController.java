@@ -23,21 +23,26 @@ public class UserController {
 
     // 회원가입
     @PostMapping("/join")
-    public User join(@RequestBody SignUpDto signUpDto){
-        return userRepository.save(User.builder()
+    public String join(@RequestBody SignUpDto signUpDto){
+        userRepository.save(User.builder()
                 .identity(signUpDto.getIdentity())
                 .password(passwordEncoder.encode(signUpDto.getPassword()))
                 .roles(Collections.singletonList("ROLE_USER"))
                 .build());
+        return "회원가입 성공";
     }
 
     // 로그인
     @PostMapping("/login")
     public String login(@RequestBody LoginDto loginDto){
+
         User user = userRepository.findByIdentity(loginDto.getIdentity())
                 .orElseThrow( () -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
+
+        //{bcrypt}$2a$10$h64wzOgGhEkvO6BOBMGXWObQs6Af4TG0RTGHwMXsWbV2YeQc3sONi
         if(!passwordEncoder.matches(loginDto.getPassword(), user.getPassword()))
             throw new IllegalStateException("잘못된 비밀번호 입니다. ");
+
 
         return jwtTokenProvider.createToken(user.getIdentity(), user.getRoles());
     }
